@@ -12,6 +12,7 @@ ASSIGNMENT_ROOT = "/mnt/d/TA/COMP 348/Grading/GRADING/A01"
 STUDENT_CSV = "/mnt/d/TA/COMP 348/Grading/GRADING/students.csv"
 FILTERED_ASSIGNMENT_ROOT = "/".join(ASSIGNMENT_ROOT.split("/")[:-1] + ["A01_filtered"])
 
+
 def filter_submissions(df_students, assignment_paths):
     def filter_students(assignment_path):
         # ~30x30, brute force should be fine for now
@@ -46,6 +47,7 @@ def copy_assignments(destination_path, filtered_assignment_paths):
         shutil.copytree(filtered_assignment_path, new_path)
         new_paths.append(new_path)
     return new_paths
+
 
 def unzip_submissions(filtered_assignments_root):
     for subdir, dirs, files in os.walk(filtered_assignments_root):
@@ -82,6 +84,7 @@ def main():
     # Unzip submissions
     unzip_submissions(FILTERED_ASSIGNMENT_ROOT)
     logging.info(f"Unzipped submissions in {FILTERED_ASSIGNMENT_ROOT}")
+
 
 if __name__ == "__main__":
     main()

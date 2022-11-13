@@ -136,24 +136,26 @@ def check_occurrences_of_keyword(original_file, modified_file, keyword='apple'):
             logging.error("ERROR: starting indices of modified keywords do not match")
     logging.info(f"{correct_updates} correct updates, {missed_updates} missed updates, for {len(original_words)} words")
 
+
 def check_memory_leaks(grading_dir_path):
     """valgrind --leak-check= full ./a.out apple"""
-    command = ["valgrind", "--leak-check=yes", "./a.out", "apple"]
+    command = ["valgrind", "--leak-check=full", "./a.out", "apple"]
     result = subprocess.run(command, capture_output=True, text=True, cwd=grading_dir_path)
     mem_leaks = True
     if "ERROR SUMMARY: 0 errors" in result.stderr:
         mem_leaks = False
     logging.info(f"Valgrind: memcheck: {'NO ERRORS' if not mem_leaks else 'ERRORS'}")
     memcheck_report_path = os.path.join(grading_dir_path,
-                                           f"{'NO_ERRORS' if not mem_leaks  else 'ERRORS'}_memcheck.txt")
+                                        f"{'NO_ERRORS' if not mem_leaks else 'ERRORS'}_memcheck.txt")
     with open(memcheck_report_path, "w") as f:
         f.write(f"MEMCHECK RETURN CODE: {result.returncode}\n\n")
         f.write(f"MEMCHECK STDOUT: {result.stdout}\n\n")
         f.write(f"MEMCHECK STDERR: {result.stderr}\n\n")
 
+
 def main():
-    src_code_path = "/mnt/d/TA/COMP 348/Grading/SOLUTION_"
-    # src_code_path = sys.argv[1]
+    # src_code_path = "/mnt/d/TA/COMP 348/Grading/SOLUTION_"
+    src_code_path = sys.argv[1]
     if not src_code_path:
         print("SRC PATH not specified")
         sys.exit()
@@ -183,7 +185,6 @@ def main():
 
     # run valgrind and save output
     check_memory_leaks(grading_dir_path)
-
 
 
 if __name__ == "__main__":
